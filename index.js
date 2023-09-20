@@ -3,10 +3,12 @@ const buttonGroup = document.querySelector(".button-group");
 const roundedEnd = document.querySelector(".rounded-end");
 const search = document.querySelector(".search");
 const selectList = document.querySelector("#js-select");
+const sort = document.querySelector(".js-sort-advanced");
 let data = {};
 let dataType = "N00";
 let keyword = "";
 let optionValue = "排序篩選";
+let order = "down";
 axios
   .get(
     "https://data.moa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?IsTransData=1&UnitId=037"
@@ -22,27 +24,47 @@ function renderData() {
   switch (optionValue) {
     case "依上價排序":
       newData = [...data.data].sort(function (a, b) {
-        return b.上價 - a.上價;
+        if (order === "down") {
+          return b.上價 - a.上價;
+        } else {
+          return a.上價 - b.上價;
+        }
       });
       break;
     case "依中價排序":
       newData = [...data.data].sort(function (a, b) {
-        return b.中價 - a.中價;
+        if (order === "down") {
+          return b.中價 - a.中價;
+        } else {
+          return a.中價 - b.中價;
+        }
       });
       break;
     case "依下價排序":
       newData = [...data.data].sort(function (a, b) {
-        return b.下價 - a.下價;
+        if (order === "down") {
+          return b.下價 - a.下價;
+        } else {
+          return a.下價 - b.下價;
+        }
       });
       break;
     case "依平均價排序":
       newData = [...data.data].sort(function (a, b) {
-        return b.平均價 - a.平均價;
+        if (order === "down") {
+          return b.平均價 - a.平均價;
+        } else {
+          return a.平均價 - b.平均價;
+        }
       });
       break;
     case "依交易量排序":
       newData = [...data.data].sort(function (a, b) {
-        return b.交易量 - a.交易量;
+        if (order === "down") {
+          return b.交易量 - a.交易量;
+        } else {
+          return a.交易量 - b.交易量;
+        }
       });
       break;
     case "排序篩選":
@@ -105,4 +127,14 @@ search.addEventListener("click", function (e) {
 selectList.addEventListener("change", function () {
   optionValue = this.value;
   renderData();
+});
+
+sort.addEventListener("click", function (e) {
+  if (e.target.nodeName === "I") {
+    optionValue = e.target.dataset.price;
+    selectList.value = e.target.dataset.price;
+    order = e.target.dataset.sort;
+    console.log(optionValue, order, selectList.value);
+    renderData();
+  }
 });

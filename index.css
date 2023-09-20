@@ -157,6 +157,7 @@ body {
 .fa-caret-up,
 .fa-caret-down {
   position: absolute;
+  cursor: pointer;
 }
 .fa-caret-up {
   top: -2px;
